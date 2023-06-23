@@ -124,6 +124,23 @@ def get_input(board: List[str], o_turn: bool) -> List[str]:
     # don't forget to `.upper()` the user's input
 
 
+def space_check(board:List[str], position) -> bool:
+    
+    return board[position] == "-"
+
+"""
+Checks whehter a space on the board is freely available
+
+Args: 
+    board: current game board
+    position: An integer from 1 - 9
+
+Returns:
+    True if the position is free, false if not
+
+
+"""
+
 def display_board(board: List[str]) -> None:
     """
     Print the game board
