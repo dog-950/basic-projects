@@ -8,11 +8,12 @@ Two player tic-tac-toe game
 
 import sys
 from typing import List
+import random
 
 
 START_BOARD = ["#"] + ["-"] * 9
 
-VECTOR_INDICES = [
+WIN_SETS = [
     [1, 2, 3],  # top row
     [4, 5, 6],  # middle row
     [7, 8, 9],  # botom row
@@ -23,14 +24,14 @@ VECTOR_INDICES = [
     [3, 5, 7],  # right to left diagonal
 ]
 
-MARKERS = ("X", "O")
+MARKERS = ("O", "X")
 
 
 def main() -> int:
     """
     Main CLI routine
 
-    Returns:
+    Returns:+
         Exit status
     """
     while ready_to_play():
@@ -46,8 +47,13 @@ def ready_to_play() -> bool:
     Returns:
         True if player is ready to play [again], False otherwise
     """
-    # TODO
-
+    choice = ''
+    while choice != 'Y' or choice != 'N':
+        choice = input('ready to play? Y or N ').upper()
+        if choice == 'Y':
+            return True
+        else:
+            return False
 
 def game() -> None:
     """
@@ -70,6 +76,11 @@ def decide_who_starts() -> None:
     """
     # TODO
 
+    if random.randit(0,1) == 0:
+        return "Player 1 - O"
+    else:
+        return "Player 2 - X"
+
 
 def game_is_over(board: List[str]) -> bool:
     """
@@ -79,7 +90,7 @@ def game_is_over(board: List[str]) -> bool:
         board: Game board
 
     Returns:
-        True if the game is over, Flase otherwise
+        True if the game is over, False otherwise
     """
     # Check if anyone has won
     for marker in MARKERS:
