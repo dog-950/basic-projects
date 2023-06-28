@@ -108,21 +108,6 @@ def game_is_over(board: List[str]) -> bool:
     # Otherwise no winning moves are possible
     return True
     
-    
-def get_input(board: List[str], o_turn: bool) -> List[str]:
-    """
-    Check where player wants to place their move, and that it is a valid move
-    
-    Args:
-        board: Current game board
-        o_turn: True if O's turn, False if X's turn
-        
-    Returns:
-        Updated game board after new input from player
-    """
-    # TODO
-    # don't forget to `.upper()` the user's input
-
 
 def space_check(board:List[str], position) -> bool:
     
@@ -140,6 +125,28 @@ Returns:
 
 
 """
+    
+def get_input(board: List[str], o_turn: bool) -> List[str]:
+    """
+    Check where player wants to place their move, and that it is a valid move
+    
+    Args:
+        board: Current game board
+        o_turn: True if O's turn, False if X's turn
+        
+    Returns:
+        Updated game board after new input from player
+    """
+    # TODO
+    # don't forget to `.upper()` the user's input
+
+    position = 0
+    while position not in range(1-10) or not space_check(board,position):
+        position = input("Pick a position between 1 and 9 ")
+        return position
+
+
+
 
 def display_board(board: List[str]) -> None:
     """
@@ -154,6 +161,10 @@ def display_board(board: List[str]) -> None:
     print("-----------")
     print(" " + board[7] + " | " + board[8] + " | " + board[9])
 
+
+def place_marker(board: List[str], marker, position):
+
+    return board[position] == marker
 
 if __name__ == "__main__":
     sys.exit(main())
