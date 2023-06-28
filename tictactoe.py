@@ -3,6 +3,9 @@
 
 """
 Two player tic-tac-toe game
+
+This is now finished!
+
 """
 
 
@@ -48,38 +51,41 @@ def ready_to_play() -> bool:
         True if player is ready to play [again], False otherwise
     """
     choice = ''
-    while choice != 'Y' or choice != 'N':
+    while choice not in ('Y', 'N'):
         choice = input('ready to play? Y or N ').upper()
-        if choice == 'Y':
-            return True
-        else:
-            return False
+    if choice == 'Y':
+        return True
+    else:
+        return False
+
 
 def game() -> None:
     """
     Play a tic-tac-toe game
     """
-    board = START_BOARD
+    board = START_BOARD.copy()
     o_turn = True
     
-    decide_who_starts()
+    decide_who_is_O()
+
+    display_board(board=board)
     
-    while not game_is_over(board):
+    while not game_is_over(board=board):
+        print(f"{'O' if o_turn else 'X'}'s turn")
         board = get_input(board=board, o_turn=o_turn)
         display_board(board=board)
         o_turn = not o_turn
+        
 
 
-def decide_who_starts() -> None:
+def decide_who_is_O() -> None:
     """
-    Decide and print who should play first (and thus who is O)
+    Decide and print who is O (and thus who should play first)
     """
-    # TODO
-
-    if random.randit(0,1) == 0:
-        return "Player 1 - O"
+    if random.randint(0,1) == 0:
+        print("Player 1 starts")
     else:
-        return "Player 2 - X"
+        print("Player 2 starts")
 
 
 def game_is_over(board: List[str]) -> bool:
@@ -94,13 +100,13 @@ def game_is_over(board: List[str]) -> bool:
     """
     # Check if anyone has won
     for marker in MARKERS:
-        for combination in VECTOR_INDICES:
+        for combination in WIN_SETS:
             if all(board[position] == marker for position in combination):
                 print(f"{marker} WINS")
                 return True
     
     # Check if any vectors could still win
-    for combination in VECTOR_INDICES:
+    for combination in WIN_SETS:
         vector = [board[position] for position in combination]
         if not all(marker in vector for marker in MARKERS):
             return False
@@ -109,22 +115,19 @@ def game_is_over(board: List[str]) -> bool:
     return True
     
 
-def space_check(board:List[str], position) -> bool:
-    
+def space_is_free(board:List[str], position) -> bool:
+    """
+    Checks whether a space on the board is freely available
+
+    Args: 
+        board: current game board
+        position: An integer from 1 - 9
+
+    Returns:
+        True if the position is free, False if not
+    """
     return board[position] == "-"
 
-"""
-Checks whehter a space on the board is freely available
-
-Args: 
-    board: current game board
-    position: An integer from 1 - 9
-
-Returns:
-    True if the position is free, false if not
-
-
-"""
     
 def get_input(board: List[str], o_turn: bool) -> List[str]:
     """
@@ -137,15 +140,11 @@ def get_input(board: List[str], o_turn: bool) -> List[str]:
     Returns:
         Updated game board after new input from player
     """
-    # TODO
-    # don't forget to `.upper()` the user's input
-
     position = 0
-    while position not in range(1-10) or not space_check(board,position):
-        position = input("Pick a position between 1 and 9 ")
-        return position
-
-
+    while position not in range(1,10) or not space_is_free(board,position):
+        position = int(input("Pick a position between 1 and 9 "))
+    board = place_marker(board=board, o_turn=o_turn, position=position)
+    return board
 
 
 def display_board(board: List[str]) -> None:
@@ -162,9 +161,19 @@ def display_board(board: List[str]) -> None:
     print(" " + board[7] + " | " + board[8] + " | " + board[9])
 
 
-def place_marker(board: List[str], marker, position):
+def place_marker(board: List[str], o_turn: bool, position: int) -> List[str]:
+    """
+    Place a marker at a given position on the board
+    
+    
+    Args:
+        board: Current game board
+        o_turn: True if O's turn, False if X's turn
+    
+    """
+    board[position] = "O" if o_turn else "X"
+    return board
 
-    return board[position] == marker
 
 if __name__ == "__main__":
     sys.exit(main())
